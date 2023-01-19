@@ -27,6 +27,8 @@ target_compile_options(
 	"$<$<CXX_COMPILER_ID:MSVC>:$<$<STREQUAL:$ENV{EnableASAN},true>:/fsanitize=address>>"
 	"$<$<CXX_COMPILER_ID:MSVC>:$<$<STREQUAL:$ENV{EnableASAN},true>:/Zi>>"
 	"$<$<CXX_COMPILER_ID:MSVC>:/MP>"
+	"$<$<CXX_COMPILER_ID:MSVC>:/favor:INTEL64>"
+	"$<$<CXX_COMPILER_ID:MSVC>:/Oi>"
 	"$<$<CXX_COMPILER_ID:MSVC>:/arch:AVX2>"
 	"$<$<CXX_COMPILER_ID:GNU>:$<$<STREQUAL:$ENV{EnableASAN},true>:-fsanitize=address>>"
 	"$<$<CXX_COMPILER_ID:GNU>:-fpermissive>"

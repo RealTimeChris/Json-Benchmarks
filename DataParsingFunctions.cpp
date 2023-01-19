@@ -155,7 +155,7 @@ namespace Jsonifier {
 		}
 		throw std::runtime_error{ "Failed to parse that value." };
 	}
-
+	/*
 	ObjectReturnData getObject(ObjectReturnData jsonData, const char* objectName) {
 		ObjectReturnData value{};
 		if (jsonData.didItSucceed && jsonData.object[objectName].get(value.object) == simdjson::SUCCESS) {
@@ -328,4 +328,5 @@ namespace Jsonifier {
 			throw std::runtime_error{ "Failed to parse that value." };
 		}
 	}
+	*/
 };

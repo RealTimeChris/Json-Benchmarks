@@ -20,12 +20,11 @@ struct TestObject01 {
 struct TestObject02 {
 	TestObject01 testObject{};
 };
-
+/*
 struct ActivitiesJson {
 	ActivitiesJson() noexcept = default;
 	ActivitiesJson(Jsonifier::Value value) {
-		Jsonifier::Value newValue01{};
-		value["TEST_OBJECT_01"].get(newValue01);
+		Jsonifier::Value newValue01{ value["TEST_OBJECT_01"].value() };
 		newValue01["TEST_OBJECT_02"].get(newValue01);
 		this->testObject.testObject.TEST_VALUE_00 = Jsonifier::getFloat(newValue01, "TEST_VALUE_00");
 		this->testObject.testObject.TEST_VALUE_01 = Jsonifier::getBool(newValue01, "TEST_VALUE_01");
@@ -44,8 +43,8 @@ struct ActivitiesJson {
 struct TheValuesJson {
 	TheValuesJson() noexcept = default;
 	TheValuesJson(Jsonifier::Document value) {
-		Jsonifier::Array valueNew{};
-		if (!value["TEST_VALUES_REAL"]["TEST_VALUES"].get(valueNew)) {
+		Jsonifier::Array valueNew{ value["TEST_VALUES_REAL"]["TEST_VALUES"].getArray() };
+		if (!value.get(valueNew)) {
 			for (const auto& valueIterator: valueNew) {
 				strings.emplace_back(valueIterator.valueUnsafe());
 			}
@@ -61,7 +60,7 @@ struct TheValueJson {
 	}
 	TheValuesJson values{};
 };
-
+*/
 struct Activities {
 	Activities() noexcept = default;
 	Activities(simdjson::ondemand::value value) {
@@ -213,7 +212,7 @@ int32_t main() {
 		ankerl::nanobench::Bench().epochs(1).run("Jsonifier test_data Benchmark", [&] {
 			Jsonifier::Parser jsonifierParser{};
 			auto jsonData = jsonifierParser.parseJson(test_data.data(), test_data.size());
-			TheValueJson value{ std::move(jsonData) };
+			//TheValueJson value{ std::move(jsonData) };
 		});
 
 		std::string canada{ FileLoader{ "../../Benchmarking/canada.json" } };
