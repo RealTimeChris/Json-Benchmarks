@@ -9,9 +9,9 @@
 
 	#include <simdjson.h>
 	#include <jsonifier/Jsonifier.hpp>
+#include <nanobench.h>
 
 namespace Jsonifier {
-	/*
 	struct ObjectReturnDataJson {
 		Value object{};
 		bool didItSucceed{ false };
@@ -63,7 +63,7 @@ namespace Jsonifier {
 	ArrayReturnDataJson getArray(Value jsonObjectData, const char* arrayName);
 
 	ArrayReturnDataJson getArray(ObjectReturnDataJson jsonObjectData, const char* arrayName);
-	*/
+
 	struct ObjectReturnData {
 		simdjson::ondemand::value object{};
 		bool didItSucceed{ false };

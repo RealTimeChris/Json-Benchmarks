@@ -20,47 +20,53 @@ struct TestObject01 {
 struct TestObject02 {
 	TestObject01 testObject{};
 };
-/*
+
 struct ActivitiesJson {
 	ActivitiesJson() noexcept = default;
 	ActivitiesJson(Jsonifier::Value value) {
-		Jsonifier::Value newValue01{ value["TEST_OBJECT_01"].value() };
-		newValue01["TEST_OBJECT_02"].get(newValue01);
-		this->testObject.testObject.TEST_VALUE_00 = Jsonifier::getFloat(newValue01, "TEST_VALUE_00");
-		this->testObject.testObject.TEST_VALUE_01 = Jsonifier::getBool(newValue01, "TEST_VALUE_01");
-		this->testObject.testObject.TEST_VALUE_02 = Jsonifier::getString(newValue01, "TEST_VALUE_02");
-		this->testObject.testObject.TEST_VALUE_03 = Jsonifier::getInt64(newValue01, "TEST_VALUE_03");
-		this->testObject.testObject.TEST_VALUE_04 = Jsonifier::getUint64(newValue01, "TEST_VALUE_04");
-		this->testObject.testObject.TEST_VALUE_05 = Jsonifier::getFloat(newValue01, "TEST_VALUE_05");
-		this->testObject.testObject.TEST_VALUE_06 = Jsonifier::getBool(newValue01, "TEST_VALUE_06");
-		this->testObject.testObject.TEST_VALUE_07 = Jsonifier::getString(newValue01, "TEST_VALUE_07");
-		this->testObject.testObject.TEST_VALUE_08 = Jsonifier::getInt64(newValue01, "TEST_VALUE_08");
-		this->testObject.testObject.TEST_VALUE_09 = Jsonifier::getUint64(newValue01, "TEST_VALUE_09");
+		Jsonifier::Value newValue01{ };
+		if (!value["TEST_OBJECT_01"].get(newValue01)) {
+			if (!newValue01["TEST_OBJECT_02"].get(newValue01)) {
+				this->testObject.testObject.TEST_VALUE_00 = Jsonifier::getFloat(newValue01, "TEST_VALUE_00");
+				this->testObject.testObject.TEST_VALUE_01 = Jsonifier::getBool(newValue01, "TEST_VALUE_01");
+				this->testObject.testObject.TEST_VALUE_02 = Jsonifier::getString(newValue01, "TEST_VALUE_02");
+				this->testObject.testObject.TEST_VALUE_03 = Jsonifier::getInt64(newValue01, "TEST_VALUE_03");
+				this->testObject.testObject.TEST_VALUE_04 = Jsonifier::getUint64(newValue01, "TEST_VALUE_04");
+				this->testObject.testObject.TEST_VALUE_05 = Jsonifier::getFloat(newValue01, "TEST_VALUE_05");
+				this->testObject.testObject.TEST_VALUE_06 = Jsonifier::getBool(newValue01, "TEST_VALUE_06");
+				this->testObject.testObject.TEST_VALUE_07 = Jsonifier::getString(newValue01, "TEST_VALUE_07");
+				this->testObject.testObject.TEST_VALUE_08 = Jsonifier::getInt64(newValue01, "TEST_VALUE_08");
+				this->testObject.testObject.TEST_VALUE_09 = Jsonifier::getUint64(newValue01, "TEST_VALUE_09");
+			}
+		}
 	};
 	TestObject02 testObject{};
 };
 
 struct TheValuesJson {
 	TheValuesJson() noexcept = default;
-	TheValuesJson(Jsonifier::Document value) {
-		Jsonifier::Array valueNew{ value["TEST_VALUES_REAL"]["TEST_VALUES"].getArray() };
-		if (!value.get(valueNew)) {
-			for (const auto& valueIterator: valueNew) {
-				strings.emplace_back(valueIterator.valueUnsafe());
+	TheValuesJson(Jsonifier::JsonDocument value) {
+		Jsonifier::Array valueNew{};
+		if (auto error = value.get(valueNew);!error) {
+			std::cout << "ELEMENTS COUNT: " << valueNew.countElements() << std::endl;
+			for (const auto valueIterator: valueNew) {
+				//strings.emplace_back(valueIterator.getObject());
 			}
-		};
+		} else {
+			std::cout << "THE ERROR IS: " << error << std::endl;
+		}
 	};
 
 	std::vector<ActivitiesJson> strings{};
 };
 
 struct TheValueJson {
-	TheValueJson(Jsonifier::Document value) {
-		this->values = TheValuesJson{ std::forward<Jsonifier::Document>(value) };
+	TheValueJson(Jsonifier::JsonDocument value) {
+		this->values = TheValuesJson{ std::forward<Jsonifier::JsonDocument>(value) };
 	}
 	TheValuesJson values{};
 };
-*/
+
 struct Activities {
 	Activities() noexcept = default;
 	Activities(simdjson::ondemand::value value) {
@@ -102,14 +108,14 @@ struct TheValue {
 
 class FileLoader {
   public:
-	FileLoader(const char* filePath) {
+	__forceinline FileLoader(const char* filePath) {
 		std::ofstream theStream{ filePath, std::ios::out | std::ios::in };
 		std::stringstream inputStream{};
 		inputStream << theStream.rdbuf();
 		this->fileContents = inputStream.str();
 	}
 
-	operator std::string() {
+	__forceinline operator std::string() {
 		return this->fileContents;
 	}
 
@@ -186,22 +192,23 @@ int32_t main() {
 
 		std::string refsnp_unsupported35000{ FileLoader{ "../../Benchmarking/refsnp-unsupported35000.json" } };
 		std::string refsnp_unsupported35000Newer = refsnp_unsupported35000;
-
+		
+		
 		ankerl::nanobench::Bench().epochs(1).run("simdjson refsnp-unsupported35000 Benchmark", [&] {
 			simdjson::ondemand::parser simdjsonParser{};
 			refsnp_unsupported35000Newer.reserve(refsnp_unsupported35000Newer.size() + simdjson::SIMDJSON_PADDING);
 			auto jsonData = simdjsonParser.iterate(refsnp_unsupported35000Newer.data(), refsnp_unsupported35000Newer.size(),
 				refsnp_unsupported35000Newer.capacity());
 		});
-				
+		
 		ankerl::nanobench::Bench().epochs(1).run("Jsonifier refsnp-unsupported35000 Benchmark", [&] {
 			Jsonifier::Parser jsonifierParser{};
-			auto jsonData = jsonifierParser.parseJson(refsnp_unsupported35000.data(), refsnp_unsupported35000.size());
+			auto jsonData = jsonifierParser.parseJson(refsnp_unsupported35000);	
 		});
-
+		/*
 		std::string test_data{ serializer.operator std::string&&() };
 		std::string test_dataNewer = test_data;
-
+		
 		ankerl::nanobench::Bench().epochs(1).run("simdjson test_data Benchmark", [&] {
 			simdjson::ondemand::parser simdjsonParser{};
 			test_dataNewer.reserve(test_dataNewer.size() + simdjson::SIMDJSON_PADDING);
@@ -212,7 +219,7 @@ int32_t main() {
 		ankerl::nanobench::Bench().epochs(1).run("Jsonifier test_data Benchmark", [&] {
 			Jsonifier::Parser jsonifierParser{};
 			auto jsonData = jsonifierParser.parseJson(test_data.data(), test_data.size());
-			//TheValueJson value{ std::move(jsonData) };
+			TheValueJson value{ std::move(jsonData) };
 		});
 
 		std::string canada{ FileLoader{ "../../Benchmarking/canada.json" } };
@@ -257,6 +264,7 @@ int32_t main() {
 			auto jsonData = jsonifierParser.parseJson(twitter.data(), twitter.size());
 		});
 
+		*/
 	} catch (std::runtime_error& e) { std::cout << e.what() << std::endl; }
 	return {};
 };
