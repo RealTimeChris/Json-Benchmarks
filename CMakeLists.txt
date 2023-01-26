@@ -1,5 +1,5 @@
 set(simdjson_DIR "C:/Program Files (x86)/simdjson")
-SET(Jsonifier_DIR "C:/Users/Chris/CMake/Jsonifier/share/jsonifier/")
+SET(Jsonifier_DIR "C:/users/chris/cmake/jsonifier/share/jsonifier/")
 
 cmake_minimum_required(VERSION 3.20)
 set(PROJECT_NAME "Json-Benchmarks")
@@ -17,6 +17,8 @@ project(
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMake;") 
 set(CMAKE_CONFIGURATION_TYPES "${CMAKE_BUILD_TYPE}")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /Zi")
+set(CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CMAKE_SHARED_LINKER_FLAGS_RELEASE} /DEBUG /OPT:REF /OPT:ICF")
 
 if (WIN32)
 	if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)

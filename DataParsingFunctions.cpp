@@ -7,7 +7,7 @@
 
 namespace Jsonifier {
 
-	int64_t getInt64(simdjson::ondemand::value jsonData, const char* key) {
+	int64_t getInt64(simdjson::ondemand::value& jsonData, const char* key) {
 		int64_t value{};
 		if (jsonData[key].get(value) == simdjson::SUCCESS) {
 			return int64_t{ value };
@@ -16,7 +16,7 @@ namespace Jsonifier {
 		}
 	}
 
-	int32_t getInt32(simdjson::ondemand::value jsonData, const char* key) {
+	int32_t getInt32(simdjson::ondemand::value& jsonData, const char* key) {
 		int64_t value{};
 		if (jsonData[key].get(value) == simdjson::SUCCESS) {
 			return static_cast<int32_t>(value);
@@ -25,7 +25,7 @@ namespace Jsonifier {
 		}
 	}
 
-	int16_t getInt16(simdjson::ondemand::value jsonData, const char* key) {
+	int16_t getInt16(simdjson::ondemand::value& jsonData, const char* key) {
 		int64_t value{};
 		if (jsonData[key].get(value) == simdjson::SUCCESS) {
 			return static_cast<int16_t>(value);
@@ -34,7 +34,7 @@ namespace Jsonifier {
 		}
 	}
 
-	int8_t getInt8(simdjson::ondemand::value jsonData, const char* key) {
+	int8_t getInt8(simdjson::ondemand::value& jsonData, const char* key) {
 		int64_t value{};
 		if (jsonData[key].get(value) == simdjson::SUCCESS) {
 			return static_cast<int8_t>(value);
@@ -43,17 +43,17 @@ namespace Jsonifier {
 		}
 	}
 
-	uint64_t getUint64(simdjson::ondemand::value jsonData, const char* key) {
+	uint64_t getUint64(simdjson::ondemand::value& jsonData, const char* key) {
 		uint64_t value{};
-		simdjson::ondemand::object newValue{};
+		simdjson::ondemand::object objectNew{};
 		if (jsonData[key].get(value) == simdjson::SUCCESS) {
 			return uint64_t{ static_cast<uint64_t>(value) };
 		} else {
-			throw std::runtime_error{ "Failed to parse that value." };
+			throw std::runtime_error{ "Failed to parse that value: uint64" };
 		}
 	}
 
-	uint32_t getUint32(simdjson::ondemand::value jsonData, const char* key) {
+	uint32_t getUint32(simdjson::ondemand::value& jsonData, const char* key) {
 		uint64_t value{};
 		if (jsonData[key].get(value) == simdjson::SUCCESS) {
 			return static_cast<uint32_t>(value);
@@ -62,7 +62,7 @@ namespace Jsonifier {
 		}
 	}
 
-	uint16_t getUint16(simdjson::ondemand::value jsonData, const char* key) {
+	uint16_t getUint16(simdjson::ondemand::value& jsonData, const char* key) {
 		uint64_t value{};
 		if (jsonData[key].get(value) == simdjson::SUCCESS) {
 			return static_cast<uint16_t>(value);
@@ -71,7 +71,7 @@ namespace Jsonifier {
 		}
 	}
 
-	uint8_t getUint8(simdjson::ondemand::value jsonData, const char* key) {
+	uint8_t getUint8(simdjson::ondemand::value& jsonData, const char* key) {
 		uint64_t value{};
 		if (jsonData[key].get(value) == simdjson::SUCCESS) {
 			return static_cast<uint8_t>(value);
@@ -80,7 +80,7 @@ namespace Jsonifier {
 		}
 	}
 
-	float getFloat(simdjson::ondemand::value jsonData, const char* key) {
+	float getFloat(simdjson::ondemand::value& jsonData, const char* key) {
 		double value{};
 		if (jsonData[key].get(value) == simdjson::SUCCESS) {
 			return double{ value };
@@ -89,7 +89,7 @@ namespace Jsonifier {
 		}
 	}
 
-	bool getBool(simdjson::ondemand::value jsonData, const char* key) {
+	bool getBool(simdjson::ondemand::value& jsonData, const char* key) {
 		bool value{};
 		if (jsonData[key].get(value) == simdjson::SUCCESS) {
 			return bool{ value };
@@ -98,7 +98,7 @@ namespace Jsonifier {
 		}
 	}
 
-	std::string getString(simdjson::ondemand::value jsonData, const char* key) {
+	std::string getString(simdjson::ondemand::value& jsonData, const char* key) {
 		std::string_view value{};
 		if (jsonData[key].get(value) == simdjson::SUCCESS) {
 			return std::string{ value.data(), value.size() };
@@ -107,7 +107,7 @@ namespace Jsonifier {
 		}
 	}
 
-	bool getObject(simdjson::ondemand::value& object, const char* key, simdjson::ondemand::value jsonObjectData) {
+	bool getObject(simdjson::ondemand::value& object, const char* key, simdjson::ondemand::value& jsonObjectData) {
 		if (jsonObjectData[key].get(object) == simdjson::SUCCESS) {
 			return true;
 		} else {
@@ -115,7 +115,7 @@ namespace Jsonifier {
 		}
 	}
 
-	bool getArray(simdjson::ondemand::array& array, const char* key, simdjson::ondemand::value jsonObjectData) {
+	bool getArray(simdjson::ondemand::array& array, const char* key, simdjson::ondemand::value& jsonObjectData) {
 		if (jsonObjectData[key].get(array) == simdjson::SUCCESS) {
 			return true;
 		} else {
@@ -123,7 +123,7 @@ namespace Jsonifier {
 		}
 	}
 
-	bool getArray(simdjson::ondemand::array& array, simdjson::ondemand::value jsonObjectData) {
+	bool getArray(simdjson::ondemand::array& array, simdjson::ondemand::value& jsonObjectData) {
 		if (jsonObjectData.get(array) == simdjson::SUCCESS) {
 			return true;
 		} else {
@@ -139,7 +139,7 @@ namespace Jsonifier {
 		return static_cast<std::string>(value);
 	}
 
-	std::string getString(simdjson::ondemand::value jsonData) {
+	std::string getString(simdjson::ondemand::value& jsonData) {
 		std::string_view value{};
 		if (jsonData.get(value) == simdjson::SUCCESS) {
 			return std::string{ value.data(), value.size() };
@@ -148,7 +148,7 @@ namespace Jsonifier {
 		}
 	}
 
-	ObjectReturnData getObject(simdjson::ondemand::value jsonData, const char* objectName) {
+	ObjectReturnData getObject(simdjson::ondemand::value& jsonData, const char* objectName) {
 		ObjectReturnData value{};
 		if (jsonData[objectName].get(value.object) == simdjson::SUCCESS) {
 			value.didItSucceed = true;
@@ -172,7 +172,7 @@ namespace Jsonifier {
 		throw std::runtime_error{ "Failed to parse that value." };
 	}
 
-	ArrayReturnData getArray(simdjson::ondemand::value jsonData, const char* arrayName) {
+	ArrayReturnData getArray(simdjson::ondemand::value& jsonData, const char* arrayName) {
 		ArrayReturnData value{};
 		if (jsonData[arrayName].get(value.arrayValue) == simdjson::SUCCESS) {
 			value.didItSucceed = true;
@@ -187,17 +187,17 @@ namespace Jsonifier {
 		}
 		throw std::runtime_error{ "Failed to parse that value." };
 	}
-	/*
-	int64_t getValueInt64(Value jsonData, const char* key) {
+	
+	int64_t getInt64(Object& jsonData, const char* key) {
 		int64_t value{};
-		if (jsonData[key].get(value) == ErrorCode::Success) {
+		if (auto error = jsonData[key].get(value); error == ErrorCode::Success) {
 			return value;
 		} else {
-			throw std::runtime_error{ "Failed to parse that value." };
+			throw std::runtime_error{ "Failed to parse that value: int64" };
 		}
 	}
 
-	int32_t getValueInt32(Value jsonData, const char* key) {
+	int32_t getInt32(Object& jsonData, const char* key) {
 		int64_t value{};
 		if (jsonData[key].get(value) == ErrorCode::Success) {
 			return static_cast<int32_t>(value);
@@ -206,7 +206,7 @@ namespace Jsonifier {
 		}
 	}
 
-	int16_t getValueInt16(Value jsonData, const char* key) {
+	int16_t getInt16(Object& jsonData, const char* key) {
 		int64_t value{};
 		if (jsonData[key].get(value) == ErrorCode::Success) {
 			return static_cast<int16_t>(value);
@@ -215,7 +215,7 @@ namespace Jsonifier {
 		}
 	}
 
-	int8_t getValueInt8(Value jsonData, const char* key) {
+	int8_t getInt8(Object& jsonData, const char* key) {
 		int64_t value{};
 		if (jsonData[key].get(value) == ErrorCode::Success) {
 			return static_cast<int8_t>(value);
@@ -224,16 +224,16 @@ namespace Jsonifier {
 		}
 	}
 
-	uint64_t getValueUint64(Value jsonData, const char* key) {
+	uint64_t getUint64(Object& jsonData, const char* key) {
 		uint64_t value{};
 		if (jsonData[key].get(value) == ErrorCode::Success) {
 			return static_cast<uint64_t>(value);
 		} else {
-			throw std::runtime_error{ "Failed to parse that value." };
+			throw std::runtime_error{ "Failed to parse that value: uint64" };
 		}
 	}
 
-	uint32_t getValueUint32(Value jsonData, const char* key) {
+	uint32_t getUint32(Object& jsonData, const char* key) {
 		uint64_t value{};
 		if (jsonData[key].get(value) == ErrorCode::Success) {
 			return static_cast<uint32_t>(value);
@@ -242,7 +242,7 @@ namespace Jsonifier {
 		}
 	}
 
-	uint16_t getValueUint16(Value jsonData, const char* key) {
+	uint16_t getUint16(Object& jsonData, const char* key) {
 		uint64_t value{};
 		if (jsonData[key].get(value) == ErrorCode::Success) {
 			return static_cast<uint16_t>(value);
@@ -251,7 +251,7 @@ namespace Jsonifier {
 		}
 	}
 
-	uint8_t getValueUint8(Value jsonData, const char* key) {
+	uint8_t getUint8(Object& jsonData, const char* key) {
 		uint64_t value{};
 		if (jsonData[key].get(value) == ErrorCode::Success) {
 			return static_cast<uint8_t>(value);
@@ -260,35 +260,35 @@ namespace Jsonifier {
 		}
 	}
 
-	float getValueFloat(Value jsonData, const char* key) {
+	float getFloat(Object& jsonData, const char* key) {
 		double value{};
-		if (jsonData[key].get(value) == ErrorCode::Success) {
+		if (auto error = jsonData[key].get(value); error == ErrorCode::Success) {
 			return double{ value };
 		} else {
-			throw std::runtime_error{ "Failed to parse that value." };
+			throw std::runtime_error{ "Failed to parse that value: float" };
 		}
 	}
 
-	bool getValueBool(Value jsonData, const char* key) {
+	bool getBool(Object& jsonData, const char* key) {
 		bool value{};
 		if (jsonData[key].get(value) == ErrorCode::Success) {
 			return bool{ value };
 		} else {
-			throw std::runtime_error{ "Failed to parse that value." };
+			throw std::runtime_error{ "Failed to parse that value: bool" };
 		}
 	}
 
-	std::string getValueString(Value jsonData, const char* key) {
+	std::string getString(Object& jsonData, const char* key) {
 		std::string_view value{};
 		if (jsonData[key].get(value) == ErrorCode::Success) {
 			return std::string{ value.data(), value.size() };
 		} else {
-			throw std::runtime_error{ "Failed to parse that value." };
+			throw std::runtime_error{ "Failed to parse that value: string" };
 			;
 		}
 	}
 
-	bool getValueObject(Object& object, const char* key, Value jsonData) {
+	bool getObject(Object& object, const char* key, Object& jsonData) {
 		if (jsonData[key].get(object) == ErrorCode::Success) {
 			return true;
 		} else {
@@ -296,37 +296,12 @@ namespace Jsonifier {
 		}
 	}
 
-	bool getValueObject(Value& object, const char* key, Value jsonData) {
-		if (jsonData[key].get(object) == ErrorCode::Success) {
-			return true;
-		} else {
-			throw std::runtime_error{ "Failed to parse that value." };
-		}
-	}
-
-	bool getValueArray(Array& array, const char* key, Value jsonData) {
+	bool getArray(Object& array, const char* key, Object& jsonData) {
 		if (jsonData[key].get(array) == ErrorCode::Success) {
 			return true;
 		} else {
 			throw std::runtime_error{ "Failed to parse that value." };
 		}
 	}
-	/*
-	bool getValueArray(Array& array, Value jsonData) {
-		if (jsonData.get(array) == ErrorCode::Success) {
-			return true;
-		} else {
-			throw std::runtime_error{ "Failed to parse that value." };
-		}
-	}
 
-	std::string getValueString(Value jsonData) {
-		std::string_view value{};
-		if (jsonData.get(value) == ErrorCode::Success) {
-			return std::string{ value.data(), value.size() };
-		} else {
-			throw std::runtime_error{ "Failed to parse that value." };
-		}
-	}
-	*/
 };
