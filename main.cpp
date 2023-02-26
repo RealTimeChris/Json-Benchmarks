@@ -3,7 +3,6 @@
 #include <fstream>
 #include <random>
 #include <iostream>
-#include <compare>
 
 struct TestObject01 {
 	double TEST_VALUE_00{};
@@ -27,7 +26,6 @@ int64_t intTime{};
 int64_t uintTime{};
 int64_t stringTime{};
 int64_t floatTime{};
-int64_t iterationTime{};
 int64_t iterations{};
 Jsonifier::StopWatch stopWatch{ std::chrono::nanoseconds{ 1 } };
 
@@ -35,6 +33,36 @@ struct ActivitiesJson {
 	ActivitiesJson() noexcept = default;
 	ActivitiesJson(Jsonifier::Object value) {
 		iterations++;
+		stopWatch.resetTimer();
+		this->testObject.testObject.TEST_VALUE_09 = Jsonifier::getUint64(value, "TEST_VALUE_39");
+		uintTime += stopWatch.totalTimePassed().count();
+		stopWatch.resetTimer();
+		this->testObject.testObject.TEST_VALUE_03 = Jsonifier::getInt64(value, "TEST_VALUE_38");
+		intTime += stopWatch.totalTimePassed().count();
+		stopWatch.resetTimer();
+		this->testObject.testObject.TEST_VALUE_07 = Jsonifier::getString(value, "TEST_VALUE_37");
+		stringTime += stopWatch.totalTimePassed().count();
+		stopWatch.resetTimer();
+		this->testObject.testObject.TEST_VALUE_01 = Jsonifier::getBool(value, "TEST_VALUE_36");
+		boolTime+= stopWatch.totalTimePassed().count();
+		stopWatch.resetTimer();
+		this->testObject.testObject.TEST_VALUE_06 = Jsonifier::getFloat(value, "TEST_VALUE_35");
+		floatTime += stopWatch.totalTimePassed().count();
+		stopWatch.resetTimer();
+		this->testObject.testObject.TEST_VALUE_09 = Jsonifier::getUint64(value, "TEST_VALUE_34");
+		uintTime += stopWatch.totalTimePassed().count();
+		stopWatch.resetTimer();
+		this->testObject.testObject.TEST_VALUE_03 = Jsonifier::getInt64(value, "TEST_VALUE_33");
+		intTime += stopWatch.totalTimePassed().count();
+		stopWatch.resetTimer();
+		this->testObject.testObject.TEST_VALUE_07 = Jsonifier::getString(value, "TEST_VALUE_32");
+		stringTime += stopWatch.totalTimePassed().count();
+		stopWatch.resetTimer();
+		this->testObject.testObject.TEST_VALUE_01 = Jsonifier::getBool(value, "TEST_VALUE_31");
+		boolTime+= stopWatch.totalTimePassed().count();
+		stopWatch.resetTimer();
+		this->testObject.testObject.TEST_VALUE_06 = Jsonifier::getFloat(value, "TEST_VALUE_30");
+		floatTime += stopWatch.totalTimePassed().count();
 		stopWatch.resetTimer();
 		this->testObject.testObject.TEST_VALUE_09 = Jsonifier::getUint64(value, "TEST_VALUE_29");
 		uintTime += stopWatch.totalTimePassed().count();
@@ -46,7 +74,7 @@ struct ActivitiesJson {
 		stringTime += stopWatch.totalTimePassed().count();
 		stopWatch.resetTimer();
 		this->testObject.testObject.TEST_VALUE_01 = Jsonifier::getBool(value, "TEST_VALUE_26");
-		boolTime += stopWatch.totalTimePassed().count();
+		boolTime+= stopWatch.totalTimePassed().count();
 		stopWatch.resetTimer();
 		this->testObject.testObject.TEST_VALUE_06 = Jsonifier::getFloat(value, "TEST_VALUE_25");
 		floatTime += stopWatch.totalTimePassed().count();
@@ -61,7 +89,7 @@ struct ActivitiesJson {
 		stringTime += stopWatch.totalTimePassed().count();
 		stopWatch.resetTimer();
 		this->testObject.testObject.TEST_VALUE_01 = Jsonifier::getBool(value, "TEST_VALUE_21");
-		boolTime += stopWatch.totalTimePassed().count();
+		boolTime+= stopWatch.totalTimePassed().count();
 		stopWatch.resetTimer();
 		this->testObject.testObject.TEST_VALUE_06 = Jsonifier::getFloat(value, "TEST_VALUE_20");
 		floatTime += stopWatch.totalTimePassed().count();
@@ -76,7 +104,7 @@ struct ActivitiesJson {
 		stringTime += stopWatch.totalTimePassed().count();
 		stopWatch.resetTimer();
 		this->testObject.testObject.TEST_VALUE_01 = Jsonifier::getBool(value, "TEST_VALUE_16");
-		boolTime += stopWatch.totalTimePassed().count();
+		boolTime+= stopWatch.totalTimePassed().count();
 		stopWatch.resetTimer();
 		this->testObject.testObject.TEST_VALUE_06 = Jsonifier::getFloat(value, "TEST_VALUE_15");
 		floatTime += stopWatch.totalTimePassed().count();
@@ -91,7 +119,7 @@ struct ActivitiesJson {
 		stringTime += stopWatch.totalTimePassed().count();
 		stopWatch.resetTimer();
 		this->testObject.testObject.TEST_VALUE_01 = Jsonifier::getBool(value, "TEST_VALUE_11");
-		boolTime += stopWatch.totalTimePassed().count();
+		boolTime+= stopWatch.totalTimePassed().count();
 		stopWatch.resetTimer();
 		this->testObject.testObject.TEST_VALUE_06 = Jsonifier::getFloat(value, "TEST_VALUE_10");
 		floatTime += stopWatch.totalTimePassed().count();
@@ -106,7 +134,7 @@ struct ActivitiesJson {
 		stringTime += stopWatch.totalTimePassed().count();
 		stopWatch.resetTimer();
 		this->testObject.testObject.TEST_VALUE_01 = Jsonifier::getBool(value, "TEST_VALUE_06");
-		boolTime += stopWatch.totalTimePassed().count();
+		boolTime+= stopWatch.totalTimePassed().count();
 		stopWatch.resetTimer();
 		this->testObject.testObject.TEST_VALUE_06 = Jsonifier::getFloat(value, "TEST_VALUE_05");
 		floatTime += stopWatch.totalTimePassed().count();
@@ -132,24 +160,23 @@ struct ActivitiesJson {
 struct TheValuesJson {
 	
 	TheValuesJson() noexcept = default;
-	TheValuesJson(Jsonifier::JsonData value) {
+	TheValuesJson(Jsonifier::JsonDataBase value) {
 		Jsonifier::Object newObject{ value };
 		Jsonifier::Array newArray = newObject["TEST_VALUES_REAL"]["TEST_VALUES"];
-		boolTime = 0;
+		boolTime= 0;
 		intTime = 0;
 		uintTime = 0;
 		stringTime = 0;
 		floatTime = 0;
-		iterationTime = 0;
 		iterations = 0;
-		for (Jsonifier::Element &valueNewer: newArray) {
+		for (auto  &valueNewer: newArray) {
 			strings.emplace_back(valueNewer["TEST_OBJECT_01"]);
 		}
-		//std::cout << "AVERAGE FLOAT TIME (Jsonifier): " << floatTime / iterations << std::endl;
-		//std::cout << "AVERAGE BOOL TIME (Jsonifier): " << boolTime / iterations << std::endl;
-		//std::cout << "AVERAGE STRING TIME (Jsonifier): " << stringTime / iterations << std::endl;
-		//std::cout << "AVERAGE INT TIME (Jsonifier): " << intTime / iterations << std::endl;
-		//std::cout << "AVERAGE UINT TIME (Jsonifier): " << uintTime / iterations << std::endl;
+		std::cout << "AVERAGE FLOAT TIME (Jsonifier): " << floatTime / iterations << std::endl;
+		std::cout << "AVERAGE BOOL TIME (Jsonifier): " << boolTime / iterations << std::endl;
+		std::cout << "AVERAGE STRING TIME (Jsonifier): " << stringTime / iterations << std::endl;
+		std::cout << "AVERAGE INT TIME (Jsonifier): " << intTime / iterations << std::endl;
+		std::cout << "AVERAGE UINT TIME (Jsonifier): " << uintTime / iterations << std::endl;
 	};
 
 	std::vector<ActivitiesJson> strings{};
@@ -170,6 +197,36 @@ struct Activities {
 		if (!value["TEST_OBJECT_01"].get(value)) {
 			iterations++;
 			stopWatch.resetTimer();
+			this->testObject.testObject.TEST_VALUE_09 = Jsonifier::getUint64(value, "TEST_VALUE_39");
+			uintTime += stopWatch.totalTimePassed().count();
+			stopWatch.resetTimer();
+			this->testObject.testObject.TEST_VALUE_03 = Jsonifier::getInt64(value, "TEST_VALUE_38");
+			intTime += stopWatch.totalTimePassed().count();
+			stopWatch.resetTimer();
+			this->testObject.testObject.TEST_VALUE_07 = Jsonifier::getString(value, "TEST_VALUE_37");
+			stringTime += stopWatch.totalTimePassed().count();
+			stopWatch.resetTimer();
+			this->testObject.testObject.TEST_VALUE_01 = Jsonifier::getBool(value, "TEST_VALUE_36");
+			boolTime+= stopWatch.totalTimePassed().count();
+			stopWatch.resetTimer();
+			this->testObject.testObject.TEST_VALUE_06 = Jsonifier::getFloat(value, "TEST_VALUE_35");
+			floatTime += stopWatch.totalTimePassed().count();
+			stopWatch.resetTimer();
+			this->testObject.testObject.TEST_VALUE_09 = Jsonifier::getUint64(value, "TEST_VALUE_34");
+			uintTime += stopWatch.totalTimePassed().count();
+			stopWatch.resetTimer();
+			this->testObject.testObject.TEST_VALUE_03 = Jsonifier::getInt64(value, "TEST_VALUE_33");
+			intTime += stopWatch.totalTimePassed().count();
+			stopWatch.resetTimer();
+			this->testObject.testObject.TEST_VALUE_07 = Jsonifier::getString(value, "TEST_VALUE_32");
+			stringTime += stopWatch.totalTimePassed().count();
+			stopWatch.resetTimer();
+			this->testObject.testObject.TEST_VALUE_01 = Jsonifier::getBool(value, "TEST_VALUE_31");
+			boolTime+= stopWatch.totalTimePassed().count();
+			stopWatch.resetTimer();
+			this->testObject.testObject.TEST_VALUE_06 = Jsonifier::getFloat(value, "TEST_VALUE_30");
+			floatTime += stopWatch.totalTimePassed().count();
+			stopWatch.resetTimer();
 			this->testObject.testObject.TEST_VALUE_09 = Jsonifier::getUint64(value, "TEST_VALUE_29");
 			uintTime += stopWatch.totalTimePassed().count();
 			stopWatch.resetTimer();
@@ -180,7 +237,7 @@ struct Activities {
 			stringTime += stopWatch.totalTimePassed().count();
 			stopWatch.resetTimer();
 			this->testObject.testObject.TEST_VALUE_01 = Jsonifier::getBool(value, "TEST_VALUE_26");
-			boolTime += stopWatch.totalTimePassed().count();
+			boolTime+= stopWatch.totalTimePassed().count();
 			stopWatch.resetTimer();
 			this->testObject.testObject.TEST_VALUE_06 = Jsonifier::getFloat(value, "TEST_VALUE_25");
 			floatTime += stopWatch.totalTimePassed().count();
@@ -195,7 +252,7 @@ struct Activities {
 			stringTime += stopWatch.totalTimePassed().count();
 			stopWatch.resetTimer();
 			this->testObject.testObject.TEST_VALUE_01 = Jsonifier::getBool(value, "TEST_VALUE_21");
-			boolTime += stopWatch.totalTimePassed().count();
+			boolTime+= stopWatch.totalTimePassed().count();
 			stopWatch.resetTimer();
 			this->testObject.testObject.TEST_VALUE_06 = Jsonifier::getFloat(value, "TEST_VALUE_20");
 			floatTime += stopWatch.totalTimePassed().count();
@@ -204,13 +261,13 @@ struct Activities {
 			uintTime += stopWatch.totalTimePassed().count();
 			stopWatch.resetTimer();
 			this->testObject.testObject.TEST_VALUE_03 = Jsonifier::getInt64(value, "TEST_VALUE_18");
-			intTime += stopWatch.totalTimePassed().count();
+			intTime += stopWatch.totalTimePassed().count();;
 			stopWatch.resetTimer();
 			this->testObject.testObject.TEST_VALUE_07 = Jsonifier::getString(value, "TEST_VALUE_17");
 			stringTime += stopWatch.totalTimePassed().count();
 			stopWatch.resetTimer();
 			this->testObject.testObject.TEST_VALUE_01 = Jsonifier::getBool(value, "TEST_VALUE_16");
-			boolTime += stopWatch.totalTimePassed().count();
+			boolTime+= stopWatch.totalTimePassed().count();
 			stopWatch.resetTimer();
 			this->testObject.testObject.TEST_VALUE_06 = Jsonifier::getFloat(value, "TEST_VALUE_15");
 			floatTime += stopWatch.totalTimePassed().count();
@@ -225,7 +282,7 @@ struct Activities {
 			stringTime += stopWatch.totalTimePassed().count();
 			stopWatch.resetTimer();
 			this->testObject.testObject.TEST_VALUE_01 = Jsonifier::getBool(value, "TEST_VALUE_11");
-			boolTime += stopWatch.totalTimePassed().count();
+			boolTime+= stopWatch.totalTimePassed().count();
 			stopWatch.resetTimer();
 			this->testObject.testObject.TEST_VALUE_06 = Jsonifier::getFloat(value, "TEST_VALUE_10");
 			floatTime += stopWatch.totalTimePassed().count();
@@ -240,7 +297,7 @@ struct Activities {
 			stringTime += stopWatch.totalTimePassed().count();
 			stopWatch.resetTimer();
 			this->testObject.testObject.TEST_VALUE_01 = Jsonifier::getBool(value, "TEST_VALUE_06");
-			boolTime += stopWatch.totalTimePassed().count();
+			boolTime+= stopWatch.totalTimePassed().count();
 			stopWatch.resetTimer();
 			this->testObject.testObject.TEST_VALUE_06 = Jsonifier::getFloat(value, "TEST_VALUE_05");
 			floatTime += stopWatch.totalTimePassed().count();
@@ -267,12 +324,11 @@ struct Activities {
 struct TheValues {
 	TheValues() noexcept = default;
 	TheValues(simdjson::ondemand::document value) {
-		boolTime = 0;
+		boolTime= 0;
 		intTime = 0;
 		uintTime = 0;
 		stringTime = 0;
 		floatTime = 0;
-		iterationTime = 0;
 		iterations = 0;
 		simdjson::ondemand::array valueNew{};
 		value["TEST_VALUES_REAL"]["TEST_VALUES"].get(valueNew);
@@ -280,11 +336,11 @@ struct TheValues {
 			strings.emplace_back(std::move(valueIterator));
 		}
 
-		//std::cout << "AVERAGE FLOAT TIME (simdjson): " << floatTime / iterations << std::endl;
-		//std::cout << "AVERAGE BOOL TIME (simdjson): " << boolTime / iterations << std::endl;
-		//std::cout << "AVERAGE STRING TIME (simdjson): " << stringTime / iterations << std::endl;
-		//std::cout << "AVERAGE INT TIME (simdjson): " << intTime / iterations << std::endl;
-		//std::cout << "AVERAGE UINT TIME (simdjson): " << uintTime / iterations << std::endl;
+		std::cout << "AVERAGE FLOAT TIME (simdjson): " << floatTime / iterations << std::endl;
+		std::cout << "AVERAGE BOOL TIME (simdjson): " << boolTime / iterations << std::endl;
+		std::cout << "AVERAGE STRING TIME (simdjson): " << stringTime / iterations << std::endl;
+		std::cout << "AVERAGE INT TIME (simdjson): " << intTime / iterations << std::endl;
+		std::cout << "AVERAGE UINT TIME (simdjson): " << uintTime / iterations << std::endl;
 	}
 	std::vector<Activities> strings{};
 };
@@ -359,14 +415,6 @@ double randomDouble() {
 	double returnValue{ static_cast<double>(std::round(distribution(generator))) };
 	return returnValue;
 }
-class TestClass01 {
-  public:
-	size_t testString{344  };
-};
-class TestClass02 : public TestClass01 {
-  public:
-	std::string testString{ "TEST_VALUES" };
-};
 
 int32_t main() {
 	try {
@@ -404,6 +452,26 @@ int32_t main() {
 			testObject["TEST_VALUE_27"] = randomString();
 			testObject["TEST_VALUE_28"] = randomInt64();
 			testObject["TEST_VALUE_29"] = randomUint64();
+			testObject["TEST_VALUE_30"] = randomDouble();
+			testObject["TEST_VALUE_31"] = randomBool();
+			testObject["TEST_VALUE_32"] = randomString();
+			testObject["TEST_VALUE_33"] = randomInt64();
+			testObject["TEST_VALUE_34"] = randomUint64();
+			testObject["TEST_VALUE_35"] = randomDouble();
+			testObject["TEST_VALUE_36"] = randomBool();
+			testObject["TEST_VALUE_37"] = randomString();
+			testObject["TEST_VALUE_38"] = randomInt64();
+			testObject["TEST_VALUE_39"] = randomUint64();
+			testObject["TEST_VALUE_40"] = randomDouble();
+			testObject["TEST_VALUE_41"] = randomBool();
+			testObject["TEST_VALUE_42"] = randomString();
+			testObject["TEST_VALUE_43"] = randomInt64();
+			testObject["TEST_VALUE_44"] = randomUint64();
+			testObject["TEST_VALUE_45"] = randomDouble();
+			testObject["TEST_VALUE_46"] = randomBool();
+			testObject["TEST_VALUE_47"] = randomString();
+			testObject["TEST_VALUE_48"] = randomInt64();
+			testObject["TEST_VALUE_49"] = randomUint64();
 			arrayValueNew["TEST_OBJECT_01"] = testObject;
 			serializer["TEST_VALUES_REAL"]["TEST_VALUES"].emplaceBack(arrayValueNew);
 		}
